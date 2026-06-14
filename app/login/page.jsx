@@ -16,6 +16,7 @@ export default function LoginPage() {
     const [emailError, setEmailError] = useState(false);
     const [passwordError, setPasswordError] = useState(false);
 
+    // when user clicks submit button
     async function handleSubmit(e) {
         e.preventDefault();
 
@@ -24,6 +25,7 @@ export default function LoginPage() {
 
         let valid = true;
 
+        // if email / password is empty, return false
         if (!email.trim()) {
             setEmailError(true);
             valid = false;
@@ -36,6 +38,7 @@ export default function LoginPage() {
 
         if (!valid) return;
 
+        // login via supabase
         const { error } = await supabase.auth.signInWithPassword({
             email,
             password,
@@ -50,6 +53,7 @@ export default function LoginPage() {
         router.push("/main");
     }
 
+    // when user clicks signup button
     function handleSignUp() {
         router.push("/signup")
     }

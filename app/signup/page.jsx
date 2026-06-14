@@ -15,6 +15,7 @@ export default function LoginPage() {
     const [passwordError, setPasswordError] = useState(false);
     const [codeError, setCodeError] = useState(false);
 
+    // when user clicks submit button
     async function handleSubmit(e) {
         e.preventDefault();
 
@@ -24,6 +25,7 @@ export default function LoginPage() {
 
         let valid = true;
 
+        // if email / password is empty, return false
         if (!email.trim()) {
             setEmailError(true);
             valid = false;
@@ -34,6 +36,7 @@ export default function LoginPage() {
             valid = false;
         }
 
+        // check for correct access code
         const res = await fetch("/api", {
             method: "POST",
             headers: {
@@ -51,6 +54,7 @@ export default function LoginPage() {
 
         if (!valid) return;
 
+        // signup via supabase
         const { data, error } = await supabase.auth.signUp({
             email,
             password,

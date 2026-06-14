@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 export default function MainPage() {
     const router = useRouter();
 
-    function goLogin() {
+    async function goLogin() {
         router.push("/login");
     }
 
