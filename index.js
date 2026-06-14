@@ -1,13 +1,13 @@
 const { app, BrowserWindow, Menu } = require("electron");
 
-// Menu.setApplicationMenu(null);
+Menu.setApplicationMenu(null);
 
 let win;
 
 function createWindow() {
     win = new BrowserWindow({
-        minWidth: 600,
-        minHeight: 600,
+        minWidth: 700,
+        minHeight: 700,
         icon: __dirname + "/public/assets/icon.png",
         useContentSize: true,
         webPreferences: {
