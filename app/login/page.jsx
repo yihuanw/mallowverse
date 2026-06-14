@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { supabase } from "../../lib/supabase";
 
 export default function LoginPage() {
     const router = useRouter();
@@ -12,7 +13,7 @@ export default function LoginPage() {
     const [emailError, setEmailError] = useState(false);
     const [passwordError, setPasswordError] = useState(false);
 
-    function handleSubmit(e) {
+    async function handleSubmit(e) {
         e.preventDefault();
 
         setEmailError(false);
@@ -30,9 +31,20 @@ export default function LoginPage() {
             valid = false;
         }
 
-        if (valid) {
-            router.push("/main");
+        if (!valid) return;
+
+        const { error } = await supabase.auth.signInWithPassword({
+            email,
+            password,
+        });
+
+        if (error) {
+            setEmailError(true);
+            setPasswordError(true);
+            return;
         }
+
+        router.push("/main");
     }
 
     function handleSignUp() {
