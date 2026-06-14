@@ -1,8 +1,11 @@
 {
   "name": "mallowverse",
   "version": "1.0.0",
-  "main": "main.js",
+  "main": "index.js",
   "scripts": {
     "start": "electron ."
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.108.1"
   }
 }

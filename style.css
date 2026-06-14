@@ -7,6 +7,10 @@
   src: url("assets/Google_Sans_Code/GoogleSansCode-VariableFont_MONO\,wght.ttf") format('truetype');
 }
 
+*, input, select, textarea, button {
+  font-family: "Google Sans Code", sans-serif;
+}
+
 html, body {
   margin: 0;
   width: 100%;
@@ -19,8 +23,44 @@ html, body {
 
   user-select: none;
 }
+
+.error {
+  border-color: #b74848;
+}
+
+.error::placeholder {
+  color: #b74848;
+}
+
+.login-form {
+  justify-content: center;
+  align-items: center;
+}
+
+button {
+    background: white;
+    border:0;
+    padding: 10px;
+    display: block;
+    margin: 0 auto;
+    font-size: 0.8em;
+}
+
+button:hover {
+    color: #617C4B;
+}
+
+input {
+    border:0;
+    padding: 10px;
+    box-shadow: 0px 0px 6px 2px #00000025;
+}
+
+input:focus {
+    outline:none!important;
+}
     
-.container {
+.main {
     width: 600px;
     height: 600px;
     padding: 25px;
@@ -49,7 +89,7 @@ html, body {
 
 .right-panel {
     width: 335px;
-    box-shadow: 0px 0px 6px 2px rgba(0, 0, 0, 0.25);
+    box-shadow: 0px 0px 6px 2px #00000025;
     padding: 12px;
     box-sizing: border-box;
 
@@ -60,11 +100,10 @@ html, body {
 
 .bottom-panel {
     flex: 1;
-    box-shadow: 0px 0px 6px 2px rgba(0, 0, 0, 0.25);
+    box-shadow: 0px 0px 6px 2px #00000025;
 }
 
 table {
-    font-family: "Google Sans Code", sans-serif;
     font-size: 0.8em;
     border-collapse: collapse;
     width: 100%;
