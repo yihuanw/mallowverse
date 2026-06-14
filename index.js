@@ -2,24 +2,26 @@ const { app, BrowserWindow, Menu } = require("electron");
 
 Menu.setApplicationMenu(null);
 
+let win;
+
 function createWindow() {
-  const win = new BrowserWindow({
-    width: 600,
-    height: 600,
+  win = new BrowserWindow({
     minWidth: 600,
     minHeight: 600,
-    icon: __dirname + '/assets/icon.png',
+    icon: __dirname + "/public/assets/icon.png",
     useContentSize: true,
     webPreferences: {
       contextIsolation: true
     }
   });
 
-  win.loadFile("main.html");
+  win.loadURL("http://localhost:3000");
+  win.maximize();
 }
 
 app.whenReady().then(createWindow);
 
 app.on("window-all-closed", () => {
-  if (process.platform !== "darwin") app.quit();
+  app.quit();
+  process.exit(0);
 });
