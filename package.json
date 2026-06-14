@@ -1,21 +1,21 @@
 {
-  "name": "mallowverse",
-  "version": "1.0.0",
-  "main": "index.js",
-  "scripts": {
-    "dev": "concurrently -k \"next dev\" \"wait-on http://localhost:3000 && electron .\"",
-    "next": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "electron": "electron ."
-  },
-  "dependencies": {
-    "@supabase/supabase-js": "^2.108.1",
-    "concurrently": "^10.0.3",
-    "next": "^16.2.9",
-    "postcss": "^8.5.15",
-    "react": "^19.2.7",
-    "react-dom": "^19.2.7",
-    "wait-on": "^9.0.10"
-  }
+    "name": "mallowverse",
+    "version": "1.0.0",
+    "main": "index.js",
+    "scripts": {
+        "dev": "concurrently -k \"next dev\" \"wait-on http://localhost:3000 && electron .\"",
+        "next": "next dev",
+        "build": "next build",
+        "start": "next start",
+        "electron": "electron ."
+    },
+    "dependencies": {
+        "@supabase/supabase-js": "^2.108.1",
+        "concurrently": "^10.0.3",
+        "next": "^16.2.9",
+        "postcss": "^8.5.15",
+        "react": "^19.2.7",
+        "react-dom": "^19.2.7",
+        "wait-on": "^9.0.10"
+    }
 }

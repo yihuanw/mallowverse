@@ -8,15 +8,18 @@ export default function LoginPage() {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [code, setCode] = useState("");
 
     const [emailError, setEmailError] = useState(false);
     const [passwordError, setPasswordError] = useState(false);
+    const [codeError, setCodeError] = useState(false);
 
-    function handleSubmit(e) {
+    async function handleSubmit(e) {
         e.preventDefault();
 
         setEmailError(false);
         setPasswordError(false);
+        setCodeError(false);
 
         let valid = true;
 
@@ -30,19 +33,34 @@ export default function LoginPage() {
             valid = false;
         }
 
+        const res = await fetch("/api/verify-code", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ code }),
+        });
+
+        const data = await res.json();
+
+        if (!data.valid) {
+            setCodeError(true);
+            valid = false;
+        }
+
         if (valid) {
             router.push("/main");
         }
     }
 
-    function handleSignUp() {
-        router.push("/signup")
+    function handleLogIn() {
+        router.push("/login")
     }
 
     return (
-        <div className="login_main">
-            <h2 className="login_title">log in</h2>
-            <div className="login_form">
+        <div className="signup_main">
+            <h2 className="signup_title">sign up</h2>
+            <div className="signup_form">
                 <form onSubmit={handleSubmit}>
                     <input
                         type="text"
@@ -62,8 +80,17 @@ export default function LoginPage() {
                     />
                     <br /><br />
 
+                    <input
+                        type="text"
+                        placeholder="access code"
+                        value={code}
+                        onChange={(e) => setCode(e.target.value)}
+                        className={codeError ? "error" : ""}
+                    />
+                    <br /><br />
+
                     <button type="submit">submit</button>
-                    <button onClick={handleSignUp}>sign up</button>
+                    <button onClick={handleLogIn}>log in</button>
                 </form>
             </div>
         </div>

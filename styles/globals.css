@@ -4,7 +4,7 @@
 
 @font-face {
   font-family: "Google Sans Code";
-  src: url("/assets/Google_Sans_Code/GoogleSansCode-VariableFont_MONO,wght.ttf")
+  src: url("/assets/GoogleSansCode-VariableFont_MONO,wght.ttf")
     format("truetype");
 }
 
@@ -25,11 +25,11 @@ html, body {
   user-select: none;
 }
 
-.error {
-  border-color: #b74848;
+.login_title, .signup_title {
+  text-align: center;
 }
 
-.error::placeholder {
+.error {
   color: #b74848;
 }
 
