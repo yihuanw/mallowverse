@@ -29,8 +29,22 @@ html, body {
   text-align: center;
 }
 
+.toast {
+    text-align: center;
+    position: fixed;
+    top: 24px;          
+    left: 50%;
+    transform: translateX(-50%);
+    color: #617C4B;
+    padding: 12px;
+}
+
 .error {
   color: #b74848;
+}
+
+.error::placeholder {
+    color: #b74848;
 }
 
 button {

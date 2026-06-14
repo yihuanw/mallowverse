@@ -1,11 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { supabase } from "../../lib/supabase";
 
 export default function LoginPage() {
     const router = useRouter();
+    const searchParams = useSearchParams();
+
+    const success = searchParams.get("success");
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -53,6 +56,11 @@ export default function LoginPage() {
 
     return (
         <div className="login_main">
+            {success && (
+                <div className="toast">
+                    Successfully created user!
+                </div>
+            )}
             <h2 className="login_title">log in</h2>
             <div className="login_form">
                 <form onSubmit={handleSubmit}>

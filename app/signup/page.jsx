@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { supabase } from "../../lib/supabase";
 
 export default function LoginPage() {
     const router = useRouter();
@@ -33,7 +34,7 @@ export default function LoginPage() {
             valid = false;
         }
 
-        const res = await fetch("/api/verify-code", {
+        const res = await fetch("/api", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -41,16 +42,26 @@ export default function LoginPage() {
             body: JSON.stringify({ code }),
         });
 
-        const data = await res.json();
+        const api = await res.json();
 
-        if (!data.valid) {
+        if (!api.valid) {
             setCodeError(true);
             valid = false;
         }
 
-        if (valid) {
-            router.push("/main");
+        if (!valid) return;
+
+        const { data, error } = await supabase.auth.signUp({
+            email,
+            password,
+        });
+
+        if (error) {
+            console.error(error);
+            return;
         }
+
+        router.push("/login?success=1");
     }
 
     function handleLogIn() {
