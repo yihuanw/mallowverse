@@ -105,7 +105,7 @@ export default function LoginPage() {
                     <br /><br />
 
                     <button type="submit">submit</button>
-                    <button onClick={handleLogIn}>log in</button>
+                    <button type="button" onClick={handleLogIn}>log in</button>
                 </form>
             </div>
         </div>

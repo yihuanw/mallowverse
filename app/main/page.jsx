@@ -16,13 +16,18 @@ export default function MainPage() {
             if (!userData?.user) return;
 
             const result = await getActiveCompanion(userData.user.id);
-            
+
             setCompanion(result);
         }
         loadCompanion();
     }, []);
 
-    async function goLogin() {
+
+    async function handleLogOut() {
+        const { error } = await supabase.auth.signOut();
+
+        if (error) return;
+
         router.push("/login");
     }
 
@@ -34,7 +39,6 @@ export default function MainPage() {
                         <img
                             src="/assets/calico.gif"
                             alt="calico"
-                            onClick={goLogin}
                         />
                     </div>
 
@@ -82,17 +86,17 @@ export default function MainPage() {
             </div>
             <div className="main-buttons">
                 <button type="button" title="profile">
-                    <img src="/icons/profile.svg" width="20"/>
+                    <img src="/icons/profile.svg" width="20" />
                 </button>
                 <button type="button" title="switch field">
-                    <img src="/icons/switch.svg" width="20"/>
+                    <img src="/icons/switch.svg" width="20" />
                 </button>
                 <button type="button" title="add field">
-                    <img src="/icons/add.svg" width="20"/>
+                    <img src="/icons/add.svg" width="20" />
                 </button>
                 <div className="divider"></div>
-                <button type="button" title="log out">
-                    <img src="/icons/logout.svg" width="20"/>
+                <button type="button" title="log out" onClick={handleLogOut}>
+                    <img src="/icons/logout.svg" width="20" />
                 </button>
             </div>
         </div>
