@@ -59,14 +59,14 @@ export default function LoginPage() {
     }
 
     return (
-        <div className="login_main">
+        <div className="login-main">
             {success && (
                 <div className="toast">
                     Successfully created user!
                 </div>
             )}
-            <h2 className="login_title">log in</h2>
-            <div className="login_form">
+            <h2 className="login-title">log in</h2>
+            <div className="login-form">
                 <form onSubmit={handleSubmit}>
                     <input
                         type="text"

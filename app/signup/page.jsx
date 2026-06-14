@@ -73,9 +73,9 @@ export default function LoginPage() {
     }
 
     return (
-        <div className="signup_main">
-            <h2 className="signup_title">sign up</h2>
-            <div className="signup_form">
+        <div className="signup-main">
+            <h2 className="signup-title">sign up</h2>
+            <div className="signup-form">
                 <form onSubmit={handleSubmit}>
                     <input
                         type="text"

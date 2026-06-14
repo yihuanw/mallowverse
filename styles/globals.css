@@ -25,7 +25,7 @@ html, body {
   user-select: none;
 }
 
-.login_title, .signup_title {
+.login-title, .signup-title {
   text-align: center;
 }
 
@@ -105,11 +105,6 @@ input:focus {
   align-items: stretch;
 }
 
-.bottom-panel {
-  flex: 1;
-  box-shadow: 0px 0px 6px 2px #00000025;
-}
-
 table {
   font-size: 0.8em;
   border-collapse: collapse;
@@ -124,6 +119,68 @@ td, th {
 
 tr:nth-child(even) {
   background-color: #E3E3E3;
+}
+
+.bottom-panel {
+  flex: 1;
+  box-shadow: 0px 0px 6px 2px #00000025;
+  padding-left: 30px;
+  padding-right: 30px;
+  padding-top: 15px;
+  padding-bottom: 10px;
+}
+
+.bottom-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.timepiece {
+    display: flex;
+    width: 160px;
+    box-shadow: 0px 0px 6px 2px #00000025;
+    margin-top: 0;
+}
+
+.timepiece button {
+    flex: 1;
+    margin: 0;
+    color: #000000;
+    font-size: 0.6em;
+}
+
+.clock {
+    text-align: center;
+    font-size: 2.5em;
+    margin: auto 0;
+}
+
+.exp-notif {
+    font-size: 0.6em;
+    margin-bottom: 6px;
+    color: #617C4B;
+}
+
+.exp-bar {
+    width: 100%;
+    height: 15px;
+    border-radius: 10px;
+    background-color: #E3E3E3;
+}
+
+.exp-filled {
+    width: 15%;
+    height: 100%;
+    border-radius: 10px;
+    background: #617C4B;
+}
+
+.exp-ratio {
+    font-size: 0.6em;
+    margin-top: 10px;
 }
 
 button,
