@@ -1,124 +1,166 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useTimer, useStopwatch } from "react-timer-hook";
+import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "../../lib/supabase";
 import { getActiveCompanion } from "../../lib/companion";
 
 export default function MainPage() {
-  // loading logged in user's companion
   const router = useRouter();
   const [companion, setCompanion] = useState(null);
+
+  // displayed exp/level — only updated at end of session
+  const [displayedExp, setDisplayedExp] = useState(0);
+  const [displayedLevel, setDisplayedLevel] = useState(0);
+  const [expFillWidth, setExpFillWidth] = useState(0);
 
   useEffect(() => {
     async function loadCompanion() {
       const { data: userData } = await supabase.auth.getUser();
-
       if (!userData?.user) return;
 
       const result = await getActiveCompanion(userData.user.id);
-
       setCompanion(result);
+      setDisplayedExp(result?.exp ?? 0);
+      setDisplayedLevel(result?.level ?? 0);
+      setExpFillWidth(((result?.exp ?? 0) / 1800) * 100);
     }
     loadCompanion();
   }, []);
 
   // timer & stopwatch
   const [mode, setMode] = useState("timer");
+  const [isRunning, setIsRunning] = useState(false);
 
   const [timerInput, setTimerInput] = useState("00:25:00");
+  const [timerSeconds, setTimerSeconds] = useState(25 * 60);
+  const [swSeconds, setSwSeconds] = useState(0);
 
-  const [timerStarted, setTimerStarted] = useState(false);
+  const intervalRef = useRef(null);
+  const sessionExpRef = useRef(0);
 
-  function normalizeTimeString(value) {
-    const parts = value.split(":");
+  // exp popup
+  const [expPopupAmount, setExpPopupAmount] = useState(null);
+  const popupTimerRef = useRef(null);
 
-    const h = parseInt(parts[0]) || 0;
-    const m = parseInt(parts[1]) || 0;
-    const s = parseInt(parts[2]) || 0;
+  async function saveAndFinalize(finalExp, finalLevel) {
+    const { data: userData } = await supabase.auth.getUser();
+    if (!userData?.user) return;
 
-    let totalSeconds = h * 3600 + m * 60 + s;
-
-    const hours = Math.floor(totalSeconds / 3600);
-    totalSeconds %= 3600;
-
-    const minutes = Math.floor(totalSeconds / 60);
-    const seconds = totalSeconds % 60;
-
-    return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+    await supabase.from("companions").update({ exp: finalExp, level: finalLevel }).eq("user_id", userData.user.id);
   }
 
-  const {
-    seconds: tSeconds,
-    minutes: tMinutes,
-    hours: tHours,
-    isRunning: tRunning,
-    pause: tPause,
-    resume: tResume,
-    restart,
-  } = useTimer({
-    expiryTimestamp: new Date(),
-    autoStart: false,
-    onExpire: () => {
-      setTimerStarted(false);
-    },
-  });
+  function flushSession() {
+    const earned = sessionExpRef.current;
+    if (earned === 0) return;
+    sessionExpRef.current = 0;
 
-  const {
-    seconds: swSeconds,
-    minutes: swMinutes,
-    hours: swHours,
-    isRunning: swRunning,
-    start: swStart,
-    pause: swPause,
-    reset: swReset,
-  } = useStopwatch({
-    autoStart: false,
-  });
+    setCompanion((c) => {
+      if (!c) return c;
 
-  function startTimer() {
-    const normalized = normalizeTimeString(timerInput);
+      let newExp = c.exp + earned;
+      let newLevel = c.level;
 
-    const [h, m, s] = normalized.split(":").map((n) => parseInt(n) || 0);
+      if (newExp >= 1800) {
+        newLevel += 1;
+        newExp = newExp - 1800;
+      }
 
-    const totalSeconds = h * 3600 + m * 60 + s;
+      const newFill = (newExp / 1800) * 100;
 
-    if (totalSeconds <= 0) return;
+      // update displayed values
+      setDisplayedExp(newExp);
+      setDisplayedLevel(newLevel);
+      setExpFillWidth(newFill);
 
-    setTimerInput(normalized);
+      // show popup
+      if (popupTimerRef.current) clearTimeout(popupTimerRef.current);
+      setExpPopupAmount(earned);
+      popupTimerRef.current = setTimeout(() => setExpPopupAmount(null), 5000);
 
-    const expiry = new Date();
+      saveAndFinalize(newExp, newLevel);
 
-    expiry.setSeconds(expiry.getSeconds() + totalSeconds);
-
-    restart(expiry, true);
-    setTimerStarted(true);
+      return { ...c, exp: newExp, level: newLevel };
+    });
   }
 
-  function resetTimer() {
-    restart(new Date(), false);
-    setTimerStarted(false);
+  useEffect(() => {
+    if (!isRunning) return;
+
+    intervalRef.current = setInterval(() => {
+      if (mode === "timer") {
+        setTimerSeconds((prev) => {
+          if (prev <= 1) {
+            clearInterval(intervalRef.current);
+            setIsRunning(false);
+            sessionExpRef.current += 1;
+            // use setTimeout so state updates from setTimerSeconds settle first
+            setTimeout(() => flushSession(), 0);
+            return 0;
+          }
+          return prev - 1;
+        });
+      } else {
+        setSwSeconds((prev) => prev + 1);
+      }
+
+      sessionExpRef.current += 1;
+    }, 1000);
+
+    return () => clearInterval(intervalRef.current);
+  }, [isRunning, mode]);
+
+  function formatTime(sec) {
+    const h = Math.floor(sec / 3600);
+    const m = Math.floor((sec % 3600) / 60);
+    const s = sec % 60;
+    return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+  }
+
+  function parseInput(value) {
+    const digits = value.replace(/\D/g, "").padStart(6, "0").slice(-6);
+    const h = Number(digits.slice(0, 2));
+    const m = Number(digits.slice(2, 4));
+    const s = Number(digits.slice(4, 6));
+    return h * 3600 + m * 60 + s;
+  }
+
+  function handlePlayPause() {
+    if (mode === "timer") {
+      if (!isRunning && timerSeconds === 0) {
+        setTimerSeconds(parseInput(timerInput));
+      }
+    }
+
+    if (isRunning) {
+      flushSession();
+    }
+
+    setIsRunning((prev) => !prev);
+  }
+
+  function handleReset() {
+    setIsRunning(false);
+    if (mode === "timer") {
+      setTimerSeconds(parseInput(timerInput));
+    } else {
+      setSwSeconds(0);
+    }
   }
 
   function switchToTimer() {
-    swPause();
-    swReset(undefined, false);
+    setIsRunning(false);
     setMode("timer");
   }
 
   function switchToStopwatch() {
-    tPause();
-    setTimerStarted(false);
+    setIsRunning(false);
     setMode("stopwatch");
   }
 
-  // when user clicks logout button
   async function handleLogOut() {
     const { error } = await supabase.auth.signOut();
-
     if (error) return;
-
     router.push("/login");
   }
 
@@ -143,7 +185,7 @@ export default function MainPage() {
                 </tr>
                 <tr>
                   <td>level</td>
-                  <td>{companion?.level}</td>
+                  <td>{displayedLevel}</td>
                 </tr>
                 <tr>
                   <td>field</td>
@@ -157,117 +199,52 @@ export default function MainPage() {
         <div className="bottom-panel">
           <div className="bottom-container">
             <div className="timepiece">
-              <button
-                type="button"
-                className={mode === "timer" ? "active" : ""}
-                onClick={switchToTimer}
-              >
+              <button type="button" className={mode === "timer" ? "active" : ""} onClick={switchToTimer}>
                 timer
               </button>
-
-              <button
-                type="button"
-                className={mode === "stopwatch" ? "active" : ""}
-                onClick={switchToStopwatch}
-              >
+              <button type="button" className={mode === "stopwatch" ? "active" : ""} onClick={switchToStopwatch}>
                 stopwatch
               </button>
             </div>
 
             <div className="clock">
               {mode === "timer" ? (
-                !timerStarted ? (
+                !isRunning && timerSeconds === 0 ? (
                   <input
                     className="timer-input"
                     value={timerInput}
                     onChange={(e) => {
                       const digits = e.target.value.replace(/\D/g, "");
-
-                      let padded = digits.padStart(6, "0").slice(-6);
-
-                      const formatted = `${padded.slice(0, 2)}:${padded.slice(2, 4)}:${padded.slice(4, 6)}`;
-
-                      setTimerInput(formatted);
-                    }}
-                    onBlur={() =>
-                      setTimerInput(normalizeTimeString(timerInput))
-                    }
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") {
-                        setTimerInput(normalizeTimeString(timerInput));
-                      }
+                      const padded = digits.padStart(6, "0").slice(-6);
+                      setTimerInput(`${padded.slice(0, 2)}:${padded.slice(2, 4)}:${padded.slice(4, 6)}`);
                     }}
                   />
                 ) : (
-                  <label>
-                    {String(tHours).padStart(2, "0")}:
-                    {String(tMinutes).padStart(2, "0")}:
-                    {String(tSeconds).padStart(2, "0")}
-                  </label>
+                  <label>{formatTime(timerSeconds)}</label>
                 )
               ) : (
-                <label>
-                  {String(swHours).padStart(2, "0")}:
-                  {String(swMinutes).padStart(2, "0")}:
-                  {String(swSeconds).padStart(2, "0")}
-                </label>
+                <label>{formatTime(swSeconds)}</label>
               )}
 
               <div className="timer-controls">
-                <button
-                  type="button"
-                  className="playpause-button"
-                  onClick={() => {
-                    if (mode === "timer") {
-                      if (!timerStarted) {
-                        startTimer();
-                      } else if (tRunning) {
-                        tPause();
-                      } else {
-                        tResume();
-                      }
-                    } else {
-                      if (swRunning) {
-                        swPause();
-                      } else {
-                        swStart();
-                      }
-                    }
-                  }}
-                >
-                  <img
-                    src={
-                      (mode === "timer" ? tRunning : swRunning)
-                        ? "/icons/pause.svg"
-                        : "/icons/play.svg"
-                    }
-                    width="20"
-                    alt=""
-                  />
+                <button type="button" className="playpause-button" onClick={handlePlayPause}>
+                  <img src={isRunning ? "/icons/pause.svg" : "/icons/play.svg"} width="20" alt="" />
                 </button>
-
-                <button
-                  type="button"
-                  onClick={() => {
-                    if (mode === "timer") {
-                      resetTimer();
-                    } else {
-                      swReset(undefined, false);
-                    }
-                  }}
-                >
+                <button type="button" onClick={handleReset}>
                   <img src="/icons/reset.svg" width="20" alt="" />
                 </button>
               </div>
             </div>
 
-            <label className="exp-notif">+ 5 exp</label>
+            <label className="exp-notif" style={{ visibility: expPopupAmount !== null ? "visible" : "hidden" }}>
+              + {expPopupAmount} exp
+            </label>
 
             <div className="exp-bar">
-              <div className="exp-filled"></div>
+              <div className="exp-filled" style={{ width: `${expFillWidth}%` }}></div>
             </div>
 
-            <label className="exp-ratio">{companion?.exp}/100</label>
+            <label className="exp-ratio">{displayedExp}/1800</label>
           </div>
         </div>
       </div>
@@ -282,7 +259,6 @@ export default function MainPage() {
         <button type="button" title="add field">
           <img src="/icons/add.svg" width="20" />
         </button>
-
         <div className="divider"></div>
         <button type="button" title="log out" onClick={handleLogOut}>
           <img src="/icons/logout.svg" width="20" />
