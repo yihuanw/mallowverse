@@ -162,10 +162,37 @@ tr:nth-child(even) {
     font-size: 0.6em;
 }
 
+.timepiece button.active {
+    background-color: #617C4B;
+    color: white;
+}
+
 .clock {
     text-align: center;
+    margin: auto 0px;
+    padding-top: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.clock label,
+.timer-input {
     font-size: 2.5em;
-    margin: auto 0;
+}
+
+.timer-input {
+    box-shadow: none;
+    text-align: center;
+    padding: 0;
+}
+
+.timer-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
 }
 
 .exp-notif {

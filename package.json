@@ -16,6 +16,7 @@
         "postcss": "^8.5.15",
         "react": "^19.2.7",
         "react-dom": "^19.2.7",
+        "react-timer-hook": "^4.0.6",
         "wait-on": "^9.0.10"
     }
 }
