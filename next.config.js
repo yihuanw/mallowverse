@@ -3,6 +3,6 @@ const { devIndicatorServerState } = require("next/dist/server/dev/dev-indicator-
 const isElectron = process.env.ELECTRON === "true";
 
 module.exports = {
-    output: "standalone",
-    devIndicators: false
+  output: "standalone",
+  devIndicators: false,
 };

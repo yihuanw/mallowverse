@@ -5,91 +5,91 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { supabase } from "../../lib/supabase";
 
 export default function LoginPage() {
-    const router = useRouter();
-    const searchParams = useSearchParams();
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
-    const success = searchParams.get("success");
+  const success = searchParams.get("success");
 
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-    const [emailError, setEmailError] = useState(false);
-    const [passwordError, setPasswordError] = useState(false);
+  const [emailError, setEmailError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
 
-    // when user clicks submit button
-    async function handleSubmit(e) {
-        e.preventDefault();
+  // when user clicks submit button
+  async function handleSubmit(e) {
+    e.preventDefault();
 
-        setEmailError(false);
-        setPasswordError(false);
+    setEmailError(false);
+    setPasswordError(false);
 
-        let valid = true;
+    let valid = true;
 
-        // if email / password is empty, return false
-        if (!email.trim()) {
-            setEmailError(true);
-            valid = false;
-        }
-
-        if (!password.trim()) {
-            setPasswordError(true);
-            valid = false;
-        }
-
-        if (!valid) return;
-
-        // login via supabase
-        const { error } = await supabase.auth.signInWithPassword({
-            email,
-            password,
-        });
-
-        if (error) {
-            setEmailError(true);
-            setPasswordError(true);
-            return;
-        }
-
-        router.push("/main");
+    // if email / password is empty, return false
+    if (!email.trim()) {
+      setEmailError(true);
+      valid = false;
     }
 
-    // when user clicks signup button
-    function handleSignUp() {
-        router.push("/signup")
+    if (!password.trim()) {
+      setPasswordError(true);
+      valid = false;
     }
 
-    return (
-        <div className="login-main">
-            {success && (
-                <div className="toast">
-                    Successfully created user!
-                </div>
-            )}
-            <h2 className="login-title">log in</h2>
-            <div className="login-form">
-                <form onSubmit={handleSubmit}>
-                    <input
-                        type="text"
-                        placeholder="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        className={emailError ? "error" : ""}
-                    />
-                    <br /><br />
+    if (!valid) return;
 
-                    <input
-                        type="password"
-                        placeholder="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        className={passwordError ? "error" : ""}
-                    />
-                    <br /><br />
+    // login via supabase
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
 
-                    <button type="submit">submit</button>
-                    <button type="button" onClick={handleSignUp}>sign up</button>
-                </form>
-            </div>
-        </div>
-    );
+    if (error) {
+      setEmailError(true);
+      setPasswordError(true);
+      return;
+    }
+
+    router.push("/main");
+  }
+
+  // when user clicks signup button
+  function handleSignUp() {
+    router.push("/signup");
+  }
+
+  return (
+    <div className="login-main">
+      {success && <div className="toast">user created</div>}
+      <h2 className="login-title">log in</h2>
+      <div className="login-form">
+        <form onSubmit={handleSubmit}>
+          <input
+            type="text"
+            placeholder="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className={emailError ? "error" : ""}
+          />
+          <br />
+          <br />
+
+          <input
+            type="password"
+            placeholder="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className={passwordError ? "error" : ""}
+          />
+          <br />
+          <br />
+
+          <button type="submit">submit</button>
+          <button type="button" onClick={handleSignUp}>
+            sign up
+          </button>
+        </form>
+      </div>
+    </div>
+  );
 }

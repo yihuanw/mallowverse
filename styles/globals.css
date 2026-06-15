@@ -1,10 +1,11 @@
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 @font-face {
-    font-family: "Google Sans Code";
-    src: url("/assets/GoogleSansCode-VariableFont_MONO,wght.ttf") format("truetype");
+  font-family: "Google Sans Code";
+  src: url("/assets/GoogleSansCode-VariableFont_MONO,wght.ttf")
+    format("truetype");
 }
 
 *,
@@ -12,230 +13,230 @@ input,
 select,
 textarea,
 button {
-    font-family: "Google Sans Code", sans-serif;
+  font-family: "Google Sans Code", sans-serif;
 }
 
 html,
 body {
-    margin: 0;
-    width: 100%;
-    height: 100%;
-    background: white;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  background: white;
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-    user-select: none;
+  user-select: none;
 }
 
 .login-title,
 .signup-title {
-    text-align: center;
+  text-align: center;
 }
 
 .toast {
-    text-align: center;
-    position: fixed;
-    top: 24px;
-    left: 50%;
-    transform: translateX(-50%);
-    color: #617C4B;
-    padding: 12px;
+  text-align: center;
+  position: fixed;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #617c4b;
+  padding: 12px;
 }
 
 .error {
-    color: #b74848;
+  color: #b74848;
 }
 
 .error::placeholder {
-    color: #b74848;
+  color: #b74848;
 }
 
 button {
-    background-color: transparent;
-    border: 0;
-    padding: 10px;
-    display: block;
-    margin: 0 auto;
-    font-size: 0.8em;
+  background-color: transparent;
+  border: 0;
+  padding: 10px;
+  display: block;
+  margin: 0 auto;
+  font-size: 0.8em;
 }
 
 button:hover {
-    color: #617C4B;
+  color: #617c4b;
 }
 
 button:focus-visible {
-    outline: 2px solid #617C4B;
+  outline: 2px solid #617c4b;
 }
 
 input {
-    border: 0;
-    padding: 10px;
-    box-shadow: 0px 0px 6px 2px #00000025;
+  border: 0;
+  padding: 10px;
+  box-shadow: 0px 0px 6px 2px #00000025;
 }
 
 input:focus {
-    outline: none !important;
+  outline: none !important;
 }
 
 .main {
-    width: 600px;
-    height: 600px;
-    padding: 25px;
-    display: flex;
-    flex-direction: column;
-    gap: 25px;
+  width: 600px;
+  height: 600px;
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
 }
 
 .top {
-    display: flex;
-    gap: 25px;
-    height: 190px;
+  display: flex;
+  gap: 25px;
+  height: 190px;
 }
 
 .left-panel {
-    width: 190px;
+  width: 190px;
 }
 
 .left-panel img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 .right-panel {
-    width: 335px;
-    box-shadow: 0px 0px 6px 2px #00000025;
-    padding: 12px;
+  width: 335px;
+  box-shadow: 0px 0px 6px 2px #00000025;
+  padding: 12px;
 
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
 }
 
 table {
-    font-size: 0.8em;
-    border-collapse: collapse;
-    width: 100%;
-    height: 100%;
+  font-size: 0.8em;
+  border-collapse: collapse;
+  width: 100%;
+  height: 100%;
 }
 
 td,
 th {
-    text-align: left;
-    padding: 10px;
+  text-align: left;
+  padding: 10px;
 }
 
 tr:nth-child(even) {
-    background-color: #E3E3E3;
+  background-color: #e3e3e3;
 }
 
 .bottom-panel {
-    flex: 1;
-    box-shadow: 0px 0px 6px 2px #00000025;
-    padding-left: 30px;
-    padding-right: 30px;
-    padding-top: 15px;
-    padding-bottom: 10px;
+  flex: 1;
+  box-shadow: 0px 0px 6px 2px #00000025;
+  padding-left: 30px;
+  padding-right: 30px;
+  padding-top: 15px;
+  padding-bottom: 10px;
 }
 
 .bottom-container {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .timepiece {
-    display: flex;
-    width: 160px;
-    box-shadow: 0px 0px 6px 2px #00000025;
-    margin-top: 0;
+  display: flex;
+  width: 160px;
+  box-shadow: 0px 0px 6px 2px #00000025;
+  margin-top: 0;
 }
 
 .timepiece button {
-    flex: 1;
-    margin: 0;
-    color: #000000;
-    font-size: 0.6em;
+  flex: 1;
+  margin: 0;
+  color: #000000;
+  font-size: 0.6em;
 }
 
 .timepiece button.active {
-    background-color: #617C4B;
-    color: white;
+  background-color: #617c4b;
+  color: white;
 }
 
 .clock {
-    text-align: center;
-    margin: auto 0px;
-    padding-top: 30px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
+  text-align: center;
+  margin: auto 0px;
+  padding-top: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
 }
 
 .clock label,
 .timer-input {
-    font-size: 2.5em;
+  font-size: 2.5em;
 }
 
 .timer-input {
-    box-shadow: none;
-    text-align: center;
-    padding: 0;
+  box-shadow: none;
+  text-align: center;
+  padding: 0;
 }
 
 .timer-controls {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
 }
 
 .exp-notif {
-    font-size: 0.6em;
-    margin-bottom: 6px;
-    color: #617C4B;
+  font-size: 0.6em;
+  margin-bottom: 6px;
+  color: #617c4b;
 }
 
 .exp-bar {
-    width: 100%;
-    height: 15px;
-    border-radius: 10px;
-    background-color: #E3E3E3;
+  width: 100%;
+  height: 15px;
+  border-radius: 10px;
+  background-color: #e3e3e3;
 }
 
 .exp-filled {
-    width: 15%;
-    height: 100%;
-    border-radius: 10px;
-    background: #617C4B;
+  width: 15%;
+  height: 100%;
+  border-radius: 10px;
+  background: #617c4b;
 }
 
 .exp-ratio {
-    font-size: 0.6em;
-    margin-top: 10px;
+  font-size: 0.6em;
+  margin-top: 10px;
 }
 
 .main-buttons {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .divider {
-    width: 1px;
-    height: 25px;
-    background-color: #a1a1a1;;
+  width: 1px;
+  height: 25px;
+  background-color: #a1a1a1;
 }
 
 button,
 input,
 textarea,
 select {
-    -webkit-app-region: no-drag;
-    cursor: pointer;
+  -webkit-app-region: no-drag;
+  cursor: pointer;
 }

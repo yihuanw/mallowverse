@@ -5,17 +5,19 @@ import { useRouter } from "next/navigation";
 import { supabase } from "../lib/supabase";
 
 export default function Home() {
-    const router = useRouter();
+  const router = useRouter();
 
-    useEffect(() => {
-        async function check() {
-            const { data: { user } } = await supabase.auth.getUser();
+  useEffect(() => {
+    async function check() {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
 
-            router.replace(user ? "/main" : "/login");
-        }
+      router.replace(user ? "/main" : "/login");
+    }
 
-        check();
-    }, []);
+    check();
+  }, []);
 
-    return null;
+  return null;
 }
