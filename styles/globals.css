@@ -102,7 +102,6 @@ input:focus {
 .left-panel img {
   width: 100%;
   height: 100%;
-  object-fit: contain;
 }
 
 .right-panel {
@@ -229,6 +228,39 @@ tr:nth-child(even) {
   width: 1px;
   height: 25px;
   background-color: #a1a1a1;
+}
+
+.profile-picture {
+  cursor: pointer;
+  object-fit: cover;
+  border-radius: 95px;
+}
+
+.dropdown-content {
+  background-color: white;
+  box-shadow: 0px 0px 6px 2px #00000025;
+  font-size: 0.8em;
+  margin-top: 10px;
+  padding: 5px;
+  z-index: 9999;
+}
+
+.dropdown-item {
+  padding: 5px;
+  cursor: pointer;
+}
+
+.dropdown-item[data-highlighted] {
+  background: #e3e3e3;
+  outline: none;
+}
+
+.dropdown-item--danger {
+  color: #b74848;
+}
+
+.avatar-file-input {
+  display: none;
 }
 
 button,

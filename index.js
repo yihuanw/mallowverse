@@ -1,6 +1,6 @@
 const { app, BrowserWindow, Menu } = require("electron");
 
-Menu.setApplicationMenu(null);
+//Menu.setApplicationMenu(null);
 
 let win;
 
