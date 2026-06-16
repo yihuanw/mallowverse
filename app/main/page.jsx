@@ -9,10 +9,6 @@ export default function MainPage() {
   const router = useRouter();
   const session = useLogic();
 
-  async function handleProfile() {
-    router.push("/profile");
-  }
-
   async function handleLogOut() {
     const { error } = await supabase.auth.signOut();
     if (error) return;
@@ -23,9 +19,7 @@ export default function MainPage() {
     <div>
       <div className="main">
         <div className="top">
-          <div className="left-panel">
-            {session.companion && <img src={`/assets/${session.companion.companion}.gif`} alt={session.companion.companion} />}
-          </div>
+          <div className="left-panel">{session.companion && <img src={`/assets/${session.companion.companion}.gif`} alt={session.companion.companion} />}</div>
           <div className="right-panel">
             <table>
               <tbody>
@@ -69,7 +63,7 @@ export default function MainPage() {
       </div>
 
       <div className="main-buttons">
-        <button type="button" title="profile" onClick={handleProfile}>
+        <button type="button" title="profile" onClick={() => router.push("/profile")}>
           <img src="/icons/profile.svg" width="20" />
         </button>
         <button type="button" title="switch field">

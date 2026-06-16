@@ -21,13 +21,17 @@ export function useLogic() {
   const intervalRef = useRef(null);
   const sessionExpRef = useRef(0);
   const popupTimerRef = useRef(null);
+  const userIdRef = useRef(null);
 
   useEffect(() => {
     async function loadCompanion() {
-      const { data: userData } = await supabase.auth.getUser();
-      if (!userData?.user) return;
+      const { data: authData } = await supabase.auth.getSession();
+      const user = authData.session?.user;
+      if (!user) return;
 
-      const result = await getActiveCompanion(userData.user.id);
+      userIdRef.current = user.id;
+
+      const result = await getActiveCompanion(user.id);
       setCompanion(result);
       setDisplayedExp(result?.exp ?? 0);
       setDisplayedLevel(result?.level ?? 0);
@@ -37,12 +41,8 @@ export function useLogic() {
   }, []);
 
   async function saveAndFinalize(finalExp, finalLevel) {
-    const { data: userData } = await supabase.auth.getUser();
-    if (!userData?.user) return;
-    await supabase
-      .from("companions")
-      .update({ exp: finalExp, level: finalLevel })
-      .eq("user_id", userData.user.id);
+    if (!userIdRef.current) return;
+    await supabase.from("companions").update({ exp: finalExp, level: finalLevel }).eq("user_id", userIdRef.current);
   }
 
   function flushSession() {

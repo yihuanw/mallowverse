@@ -20,13 +20,14 @@ export default function MainPage() {
 
   useEffect(() => {
     async function loadProfile() {
-      const { data: authData } = await supabase.auth.getUser();
-      if (!authData.user) {
+      const { data: authData } = await supabase.auth.getSession();
+      const user = authData.session?.user;
+      if (!user) {
         router.push("/login");
         return;
       }
 
-      const { id, email, created_at } = authData.user;
+      const { id, email, created_at } = user;
       setUserId(id);
 
       const { data: companions } = await supabase.from("companions").select("level, exp").eq("user_id", id);
