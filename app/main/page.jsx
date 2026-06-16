@@ -20,7 +20,7 @@ export default function MainPage() {
       <div className="main">
         <div className="top">
           <div className="left-panel">
-            <img src="/assets/calico.gif" alt="calico" />
+            <img src={`/assets/${session.companion?.companion}.gif`} alt={session.companion?.companion || "companion"} />
           </div>
 
           <div className="right-panel">
