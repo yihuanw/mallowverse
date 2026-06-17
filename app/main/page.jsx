@@ -19,7 +19,8 @@ export default function MainPage() {
     <div>
       <div className="main">
         <div className="top">
-          <div className="left-panel">{session.companion && <img src={`/assets/${session.companion.companion}.gif`} alt={session.companion.companion} />}</div>
+          <div className="left-panel">
+            {session.companion && <img src={`/assets/${session.companion.companion}.gif`} alt={session.companion.companion} />}</div>
           <div className="right-panel">
             <table>
               <tbody>

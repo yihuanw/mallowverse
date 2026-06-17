@@ -17,6 +17,7 @@ export default function MainPage() {
     userSince: "",
   });
   const [avatarUrl, setAvatarUrl] = useState("/assets/default.svg");
+  const [companions, setCompanions] = useState([]);
 
   useEffect(() => {
     async function loadProfile() {
@@ -30,7 +31,7 @@ export default function MainPage() {
       const { id, email, created_at } = user;
       setUserId(id);
 
-      const { data: companions } = await supabase.from("companions").select("level, exp").eq("user_id", id);
+      const { data: companions } = await supabase.from("companions").select("companion, name, level, exp, field").eq("user_id", id);
 
       const totalSeconds = (companions?.reduce((sum, c) => sum + c.level, 0) ?? 0) * 3600 + (companions?.reduce((sum, c) => sum + c.exp, 0) ?? 0);
 
@@ -51,6 +52,8 @@ export default function MainPage() {
 
       const { data } = supabase.storage.from("avatars").getPublicUrl(`${id}.png`);
       setAvatarUrl(`${data.publicUrl}?t=${Date.now()}`);
+
+      setCompanions(companions || []);
     }
 
     loadProfile();
@@ -133,7 +136,21 @@ export default function MainPage() {
           </div>
         </div>
 
-        <div className="bottom-panel" />
+        <div className="bottom-panel">
+          <label className="label-profile">companions</label>
+          <div className="companions-container">
+            {companions.map((companion) => (
+              <div key={companion.name} className="companion-card">
+                <img src={`/assets/${companion.companion}.gif`} alt={companion.companion} width="120px" height="120px"/>
+                <label>
+                {companion.name}<br/>
+                lvl {companion.level}<br/>
+                {companion.field}
+                </label>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
 
       <div className="main-buttons">
