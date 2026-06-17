@@ -4,6 +4,7 @@ import { useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useLogic } from "./useLogic";
 import { Avatar } from "./avatar";
+import { CompanionCard } from "./companionCard";
 
 export default function MainPage() {
   const router = useRouter();
@@ -52,16 +53,14 @@ export default function MainPage() {
           <label className="label-profile">companions</label>
           <div className="companions-container">
             {session.companions.map((companion) => (
-              <div key={companion.name} className="companion-card">
-                <img src={`/assets/${companion.companion}.gif`} alt={companion.companion} width="120px" height="120px" />
-                <label>
-                  {companion.name}
-                  <br />
-                  lvl {companion.level}
-                  <br />
-                  {companion.field}
-                </label>
-              </div>
+              <CompanionCard
+                key={companion.name}
+                companion={companion}
+                onChangeCompanion={session.handleChangeCompanion}
+                onChangeName={session.handleChangeName}
+                onChangeField={session.handleChangeField}
+                onDeleteCompanion={session.handleDeleteCompanion}
+              />
             ))}
           </div>
         </div>

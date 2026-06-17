@@ -82,6 +82,55 @@ export function useLogic(router) {
     setAvatarUrl("/assets/default.svg");
   }
 
+  async function handleChangeCompanion(companion, newCompanion) {
+    if (!userId) return;
+    const { error } = await supabase.from("companions").update({ companion: newCompanion }).eq("user_id", userId).eq("name", companion.name);
+
+    if (error) {
+      console.error("Change companion error:", error);
+      return;
+    }
+
+    setCompanions((prev) => prev.map((c) => (c.name === companion.name ? { ...c, companion: newCompanion } : c)));
+  }
+
+  async function handleChangeName(companion, newName) {
+    if (!userId || !newName || newName === companion.name) return;
+    const { error } = await supabase.from("companions").update({ name: newName }).eq("user_id", userId).eq("name", companion.name);
+
+    if (error) {
+      console.error("Change name error:", error);
+      return;
+    }
+
+    setCompanions((prev) => prev.map((c) => (c.name === companion.name ? { ...c, name: newName } : c)));
+  }
+
+  async function handleChangeField(companion, newField) {
+    if (!userId) return;
+    const { error } = await supabase.from("companions").update({ field: newField }).eq("user_id", userId).eq("name", companion.name);
+
+    if (error) {
+      console.error("Change field error:", error);
+      return;
+    }
+
+    setCompanions((prev) => prev.map((c) => (c.name === companion.name ? { ...c, field: newField } : c)));
+  }
+
+  async function handleDeleteCompanion(companion) {
+    if (!userId) return;
+    const { error } = await supabase.from("companions").delete().eq("user_id", userId).eq("name", companion.name);
+
+    if (error) {
+      console.error("Delete companion error:", error);
+      return;
+    }
+
+    setCompanions((prev) => prev.filter((c) => c.name !== companion.name));
+    setProfileData((prev) => ({ ...prev, companionCount: prev.companionCount - 1 }));
+  }
+
   return {
     userId,
     profileData,
@@ -90,5 +139,9 @@ export function useLogic(router) {
     companions,
     handleAvatarUpload,
     handleDeleteAvatar,
+    handleChangeCompanion,
+    handleChangeName,
+    handleChangeField,
+    handleDeleteCompanion,
   };
 }
