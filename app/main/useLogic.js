@@ -13,7 +13,7 @@ export function useLogic() {
   const [mode, setMode] = useState("timer");
   const [isRunning, setIsRunning] = useState(false);
   const [timerInput, setTimerInput] = useState("00:15:00");
-  const [timerSeconds, setTimerSeconds] = useState(15 * 60);
+  const [timerSeconds, setTimerSeconds] = useState(0);
   const [swSeconds, setSwSeconds] = useState(0);
 
   const [expPopupAmount, setExpPopupAmount] = useState(null);
@@ -115,10 +115,12 @@ export function useLogic() {
   }
 
   function handlePlayPause() {
-    if (mode === "timer" && !isRunning && timerSeconds === 0) {
+    if (isRunning) {
+      flushSession();
+      setTimerInput(formatTime(timerSeconds));
+    } else {
       setTimerSeconds(parseInput(timerInput));
     }
-    if (isRunning) flushSession();
     setIsRunning((prev) => !prev);
   }
 

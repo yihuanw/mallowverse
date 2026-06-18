@@ -27,7 +27,7 @@ export function MainControls({
 
       <div className="clock">
         {mode === "timer" ? (
-          !isRunning && timerSeconds === 0 ? (
+          !isRunning ? (
             <input
               className="timer-input"
               value={timerInput}
