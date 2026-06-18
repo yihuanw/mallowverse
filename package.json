@@ -1,6 +1,6 @@
 {
   "name": "mallowverse",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A desktop study companion app with timer, stopwatch, and leveling system",
   "author": "yihuanw",
   "main": "index.js",
@@ -11,7 +11,7 @@
     "start": "next start",
     "electron": "electron .",
     "build:electron": "cross-env ELECTRON=true next build && electron-builder --publish never",
-    "build:publish": "cross-env ELECTRON=true next build && electron-builder --publish always"
+    "build:publish": "cross-env ELECTRON=true next build && electron-builder --publish on-tag"
   },
   "dependencies": {
     "electron-updater": "^6.8.9",
