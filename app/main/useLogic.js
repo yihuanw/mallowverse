@@ -42,7 +42,7 @@ export function useLogic() {
 
   async function saveAndFinalize(finalExp, finalLevel) {
     if (!userIdRef.current) return;
-    await supabase.from("companions").update({ exp: finalExp, level: finalLevel }).eq("user_id", userIdRef.current);
+    await supabase.from("companions").update({ exp: finalExp, level: finalLevel }).eq("user_id", userIdRef.current).eq("active", true);
   }
 
   function flushSession() {

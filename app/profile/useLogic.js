@@ -26,7 +26,11 @@ export function useLogic(router) {
       const { id, email, created_at } = user;
       setUserId(id);
 
-      const { data: companions } = await supabase.from("companions").select("companion, name, level, exp, field").eq("user_id", id);
+      const { data: companions } = await supabase
+        .from("companions")
+        .select("id, companion, name, level, exp, field, created_at")
+        .eq("user_id", id)
+        .order("created_at", { ascending: true });
 
       const totalSeconds = (companions?.reduce((sum, c) => sum + c.level, 0) ?? 0) * 3600 + (companions?.reduce((sum, c) => sum + c.exp, 0) ?? 0);
 
@@ -52,7 +56,7 @@ export function useLogic(router) {
     }
 
     loadProfile();
-  }, [router]);
+  }, []);
 
   async function handleAvatarUpload(event) {
     const file = event.target.files?.[0];

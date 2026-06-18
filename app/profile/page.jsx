@@ -50,11 +50,11 @@ export default function MainPage() {
         </div>
 
         <div className="bottom-panel">
-          <label className="label-profile">companions</label>
+          <label className="companions-label">companions</label>
           <div className="companions-container">
             {session.companions.map((companion) => (
               <CompanionCard
-                key={companion.name}
+                key={companion.id}
                 companion={companion}
                 onChangeCompanion={session.handleChangeCompanion}
                 onChangeName={session.handleChangeName}

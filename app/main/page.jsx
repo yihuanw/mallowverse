@@ -67,10 +67,10 @@ export default function MainPage() {
         <button type="button" title="profile" onClick={() => router.push("/profile")}>
           <img src="/icons/profile.svg" width="20" />
         </button>
-        <button type="button" title="switch field">
+        <button type="button" title="switch companion" onClick={() => router.push("/switchCompanion")}>
           <img src="/icons/switch.svg" width="20" />
         </button>
-        <button type="button" title="add field">
+        <button type="button" title="add companion">
           <img src="/icons/add.svg" width="20" />
         </button>
         <div className="divider"></div>
