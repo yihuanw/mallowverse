@@ -1,25 +1,65 @@
 {
-    "name": "mallowverse",
-    "version": "1.0.0",
-    "main": "index.js",
-    "scripts": {
-        "dev": "concurrently -k \"next dev\" \"wait-on http://localhost:3000 && electron .\"",
-        "next": "next dev",
-        "build": "next build",
-        "start": "next start",
-        "electron": "electron ."
+  "name": "mallowverse",
+  "version": "1.0.0",
+  "description": "A desktop study companion app with timer, stopwatch, and leveling system",
+  "author": "yihuanw",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently -k \"next dev\" \"wait-on http://localhost:3000 && electron .\"",
+    "next": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "electron": "electron .",
+    "build:electron": "cross-env ELECTRON=true next build && electron-builder --publish never",
+    "build:publish": "cross-env ELECTRON=true next build && electron-builder --publish always"
+  },
+  "dependencies": {
+    "electron-updater": "^6.8.9",
+    "serve-handler": "^6.1.7"
+  },
+  "devDependencies": {
+    "@radix-ui/react-alert-dialog": "^1.1.17",
+    "@radix-ui/react-dialog": "^1.1.17",
+    "@radix-ui/react-dropdown-menu": "^2.1.18",
+    "@supabase/supabase-js": "^2.108.1",
+    "concurrently": "^10.0.3",
+    "cross-env": "^10.1.0",
+    "electron": "^42.4.1",
+    "electron-builder": "^26.15.3",
+    "next": "^16.2.9",
+    "postcss": "^8.5.15",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "react-timer-hook": "^4.0.6",
+    "wait-on": "^9.0.10"
+  },
+  "build": {
+    "appId": "com.mallowverse.app",
+    "productName": "mallowverse",
+    "files": [
+      "out/**/*",
+      "index.js"
+    ],
+    "directories": {
+      "buildResources": "assets",
+      "output": "release"
     },
-    "dependencies": {
-        "@radix-ui/react-alert-dialog": "^1.1.17",
-        "@radix-ui/react-dialog": "^1.1.17",
-        "@radix-ui/react-dropdown-menu": "^2.1.18",
-        "@supabase/supabase-js": "^2.108.1",
-        "concurrently": "^10.0.3",
-        "next": "^16.2.9",
-        "postcss": "^8.5.15",
-        "react": "^19.2.7",
-        "react-dom": "^19.2.7",
-        "react-timer-hook": "^4.0.6",
-        "wait-on": "^9.0.10"
+    "publish": {
+      "provider": "github",
+      "owner": "yihuanw",
+      "repo": "mallowverse"
+    },
+    "win": {
+      "target": "nsis",
+      "icon": "public/assets/icon.ico"
+    },
+    "mac": {
+      "target": "dmg",
+      "icon": "public/assets/icon.icns"
+    },
+    "linux": {
+      "target": "AppImage",
+      "icon": "public/assets/icon.png"
     }
+  }
 }
