@@ -11,7 +11,7 @@
     "start": "next start",
     "electron": "electron .",
     "build:electron": "cross-env ELECTRON=true next build && electron-builder --publish never",
-    "build:publish": "cross-env ELECTRON=true next build && electron-builder --publish on-tag"
+    "build:publish": "cross-env ELECTRON=true next build && electron-builder --publish onTag"
   },
   "dependencies": {
     "electron-updater": "^6.8.9",
