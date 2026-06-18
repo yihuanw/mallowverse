@@ -40,8 +40,16 @@ body {
   top: 24px;
   left: 50%;
   transform: translateX(-50%);
-  color: #617c4b;
-  padding: 12px;
+
+  background-color: #617c4b;
+  color: #ffffff;
+  font-size: 0.6em;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.toast.hide {
+  opacity: 0;
 }
 
 .error {
@@ -359,6 +367,30 @@ tr:nth-child(even) {
   flex-direction: column;
   align-items: center;
   box-shadow: 0px 0px 6px 2px #00000025;
+}
+
+.main-full.add-companion {
+  justify-content: center;
+  gap: 20px;
+}
+
+.companion-card.add-companion {
+  height: 145px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: border-color 0.2s ease;
+}
+
+.companion-card.add-companion.selected {
+  border-color: #617c4b;
+}
+
+.companion-card:hover {
+  border-color: #617c4b75;
+}
+
+.main-buttons button:disabled {
+  opacity: 0.25;
 }
 
 button,

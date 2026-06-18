@@ -28,7 +28,7 @@ export default function MainPage() {
     }
 
     loadProfile();
-  }, [router]);
+  }, []);
 
   async function setActiveCompanion(companionId) {
     const { data: authData } = await supabase.auth.getSession();
@@ -42,7 +42,7 @@ export default function MainPage() {
 
   return (
     <div>
-      <div className="main-full">
+      <div className="main-full switch-companion">
         <label className="companions-label">companions</label>
         <div className="companions-container" style={{ height: "100%" }}>
           {companions.map((companion) => (

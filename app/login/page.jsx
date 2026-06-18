@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { supabase } from "../../lib/supabase";
 
@@ -8,15 +8,21 @@ export default function LoginPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const success = searchParams.get("success");
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
 
-  // when user clicks submit button
+  const [success, setSuccess] = useState(false);
+  const successParam = searchParams.get("success");
+
+  useEffect(() => {
+    if (successParam) {
+      setSuccess(true);
+    }
+  }, [successParam]);
+
   async function handleSubmit(e) {
     e.preventDefault();
 
@@ -25,7 +31,6 @@ export default function LoginPage() {
 
     let valid = true;
 
-    // if email / password is empty, return false
     if (!email.trim()) {
       setEmailError(true);
       valid = false;
@@ -38,7 +43,6 @@ export default function LoginPage() {
 
     if (!valid) return;
 
-    // login via supabase
     const { error } = await supabase.auth.signInWithPassword({
       email,
       password,
@@ -53,7 +57,6 @@ export default function LoginPage() {
     router.push("/main");
   }
 
-  // when user clicks signup button
   function handleSignUp() {
     router.push("/signup");
   }
@@ -61,16 +64,11 @@ export default function LoginPage() {
   return (
     <div className="login-main">
       {success && <div className="toast">user created</div>}
+
       <h2 className="login-title">log in</h2>
       <div className="login-form">
         <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            placeholder="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className={emailError ? "error" : ""}
-          />
+          <input type="text" placeholder="email" value={email} onChange={(e) => setEmail(e.target.value)} className={emailError ? "error" : ""} />
           <br />
           <br />
 
