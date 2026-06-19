@@ -9,18 +9,15 @@ export default function LoginPage() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [code, setCode] = useState("");
 
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
-  const [codeError, setCodeError] = useState(false);
 
   async function handleSubmit(e) {
     e.preventDefault();
 
     setEmailError(false);
     setPasswordError(false);
-    setCodeError(false);
 
     let valid = true;
 
@@ -31,22 +28,6 @@ export default function LoginPage() {
 
     if (!password.trim()) {
       setPasswordError(true);
-      valid = false;
-    }
-
-    // check for correct access code
-    const res = await fetch("/api", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ code }),
-    });
-
-    const api = await res.json();
-
-    if (!api.valid) {
-      setCodeError(true);
       valid = false;
     }
 
@@ -86,20 +67,11 @@ export default function LoginPage() {
 
           <input
             type="password"
-            placeholder="password"
+            placeholder="password (min 6 chars)"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             className={passwordError ? "error" : ""}
-          />
-          <br />
-          <br />
-
-          <input
-            type="text"
-            placeholder="access code"
-            value={code}
-            onChange={(e) => setCode(e.target.value)}
-            className={codeError ? "error" : ""}
+            style={{ fontSize: "0.78em", width: "100%" }}
           />
           <br />
           <br />
