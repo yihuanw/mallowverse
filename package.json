@@ -1,6 +1,6 @@
 {
   "name": "mallowverse",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A desktop study companion app with timer, stopwatch, and leveling system",
   "author": "yihuanw",
   "main": "index.js",
@@ -38,7 +38,8 @@
     "productName": "mallowverse",
     "files": [
       "out/**/*",
-      "index.js"
+      "index.js",
+      "package.json"
     ],
     "directories": {
       "buildResources": "assets",
