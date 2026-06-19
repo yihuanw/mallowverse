@@ -9,15 +9,18 @@ export default function LoginPage() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [code, setCode] = useState("");
 
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
+  const [codeError, setCodeError] = useState(false);
 
   async function handleSubmit(e) {
     e.preventDefault();
 
     setEmailError(false);
     setPasswordError(false);
+    setCodeError(false);
 
     let valid = true;
 
@@ -31,15 +34,24 @@ export default function LoginPage() {
       valid = false;
     }
 
+    const { data: isValid, error } = await supabase.rpc("check_access_code", {
+      code_input: code,
+    });
+
+    if (error || !isValid) {
+      setCodeError(true);
+      return;
+    }
+
     if (!valid) return;
 
-    const { data, error } = await supabase.auth.signUp({
+    const { data, err } = await supabase.auth.signUp({
       email,
       password,
     });
 
-    if (error) {
-      console.error(error);
+    if (err) {
+      console.error(err);
       return;
     }
 
@@ -55,13 +67,7 @@ export default function LoginPage() {
       <h2 className="signup-title">sign up</h2>
       <div className="signup-form">
         <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            placeholder="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className={emailError ? "error" : ""}
-          />
+          <input type="text" placeholder="email" value={email} onChange={(e) => setEmail(e.target.value)} className={emailError ? "error" : ""} />
           <br />
           <br />
 
@@ -73,6 +79,10 @@ export default function LoginPage() {
             className={passwordError ? "error" : ""}
             style={{ fontSize: "0.78em", width: "100%" }}
           />
+          <br />
+          <br />
+
+          <input type="text" placeholder="access code" value={code} onChange={(e) => setCode(e.target.value)} className={codeError ? "error" : ""} />
           <br />
           <br />
 
