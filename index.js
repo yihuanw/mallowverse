@@ -28,6 +28,7 @@ async function createWindow() {
     useContentSize: true,
     webPreferences: {
       contextIsolation: true,
+      backgroundThrottling: false
     },
   });
 
